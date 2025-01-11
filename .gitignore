@@ -1,0 +1,60 @@
+# Игнорируем временные файлы редакторов
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+
+# Игнорируем файлы Ansible Vault (если используются)
+*.vault
+*.enc
+
+# Игнорируем файлы с паролями или ключами
+*.key
+*.crt
+*.pem
+*.pfx
+*.secrets
+
+# Игнорируем содержимое с конфиденциальными данными
+group_vars/all/*.yml
+group_vars/*/vault.yml
+host_vars/*/vault.yml
+
+# Игнорируем файлы инвентаря для production
+inventory/production
+inventory/prod.yml
+
+# Игнорируем динамические инвентари, если они создаются локально
+inventory/*.dynamic
+inventory/*.cache
+
+# Игнорируем лишние логи
+*.log
+
+# Игнорируем файлы для ролей, генерируемые автоматически
+roles/*/tests/
+roles/*/.molecule/
+roles/*/molecule/
+roles/*/files/
+roles/*/inventory/
+
+# Игнорируем файлы результатов линтинга
+*.retry
+
+# Игнорируем файлы локальных переменных окружения
+.env
+.env.*
+
+# Игнорируем зависимости Python (если используется)
+__pycache__/
+*.py[cod]
+*.pyo
+Pipfile
+Pipfile.lock
+*.egg-info/
+
+# Игнорируем артефакты CI/CD (если используется)
+ci/outputs/
+build/
+dist/
