@@ -1,0 +1,5 @@
+ansible_host: gitlab.bindi.art
+nginx_server_name: gitlab.bindi.art
+gitlab_proxy_pass: http://127.0.0.1:8080
+nginx_listen_port: 80
+image_path_set: /var/www/html/error-image.png

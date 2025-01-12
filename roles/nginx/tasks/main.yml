@@ -1,0 +1,64 @@
+- name: Обновить список пакетов
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Установить Nginx
+  ansible.builtin.apt:
+    name: nginx
+    state: present
+
+- name: Коприование главного шаблона для Nginx
+  ansible.builtin.template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: '0644'
+
+- name: Копирование шаблона конфигурации сайта
+  ansible.builtin.template:
+    src: templates/gitlab_site.conf.j2
+    dest: /etc/nginx/sites-available/gitlab_site.conf
+    mode: '0644'
+
+- name: Copy custom 404 error page template
+  ansible.builtin.template:
+        src: "404.html.j2"
+        dest: "/usr/share/nginx/html/custom_404.html"
+        mode: '0644'
+
+- name: Copy error image
+  ansible.builtin.copy:
+        src: "./files/erro_page.png"
+        dest: "/var/www/html/error-image.png"
+        mode: '0644'
+
+
+
+- name: Проверка конфигурации Nginx
+  ansible.builtin.command:
+    cmd: nginx -t
+  register: nginx_check
+
+
+- name: Проверить, открыт ли порт 80
+  ansible.builtin.command:
+    cmd: ufw status
+  register: ufw_status
+
+- name: Открыть порт 80, если он закрыт
+  ansible.builtin.command:
+    cmd: ufw allow 80/tcp
+  when: "'80/tcp' not in ufw_status.stdout"
+
+- name: Перезапустить ufw, если были изменения
+  ansible.builtin.service:
+    name: ufw
+    state: restarted
+    enabled: true
+
+- name: Перезапустить Nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+    enabled: true
+
+
