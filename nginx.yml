@@ -1,5 +1,5 @@
 - name: Настройка Nginx с проверкой порта
-  hosts: gitlab
+  hosts: all
   become: true
   roles:
     - nginx
